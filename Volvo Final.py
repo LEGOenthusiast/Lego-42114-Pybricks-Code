@@ -1,9 +1,10 @@
+# Lego 42114 Volvo A60H
 from pybricks.hubs import TechnicHub
 from pybricks.pupdevices import Motor, Remote
 from pybricks.parameters import Port, Direction, Stop, Button, Color
 from pybricks.tools import wait
 
-# Initialize the motors.
+# Initialize.
 steer = Motor(Port.D)
 drive = Motor(Port.A, Direction.COUNTERCLOCKWISE)
 gearbox = Motor(Port.B, Direction.COUNTERCLOCKWISE)
@@ -23,12 +24,14 @@ def Cal_steer():
     steer.run_angle(500, -calib)
     steer.reset_angle(0)
     steer.stop()
-Cal_steer()
 
 def Cal_gear():
     gearbox.run_until_stalled(-200, duty_limit=40)
     gearbox.reset_angle(0)
     gearbox.stop()
+
+# Calibrate.
+Cal_steer()
 Cal_gear()
 gear = 1
 speed = 100
@@ -40,18 +43,18 @@ while True:
     # If the left button and center button are pressed, shutdown the hub.
     if Button.LEFT in pressed and Button.CENTER in pressed:
         hub.system.shutdown()
+
     # If the right button and center button are pressed, recalibrate the motors.
     if Button.RIGHT in pressed and Button.CENTER in pressed:
         Cal_gear()
         Cal_steer()
 
-
     # Choose the steer angle based on the right controls.
     steer_angle = 0
     if Button.RIGHT_MINUS in pressed:
-        steer_angle -= 75
+        steer_angle -= 62
     if Button.RIGHT_PLUS in pressed:
-        steer_angle += 75
+        steer_angle += 62
 
     # Steer to the selected angle.
     steer.run_target(500, steer_angle, wait=False)
@@ -98,5 +101,4 @@ while True:
 
     # Apply the selected speed.
     drive.dc(drive_speed)
-    # Wait.
     wait(10)
